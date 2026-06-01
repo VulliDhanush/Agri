@@ -25,7 +25,7 @@ export default function Footer() {
           <p style={{ color: '#666', fontSize: '0.9rem', marginBottom: '1rem' }}>For agricultural queries and selling assistance.</p>
           <div style={{ fontWeight: 'bold', fontSize: '1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: 'var(--text-main)' }}>
             <PhoneCall size={20} color="var(--primary-color)" />
-            +91 98765 43210
+            +91 ----- -----
           </div>
         </div>
 
@@ -38,7 +38,7 @@ export default function Footer() {
           <p style={{ color: '#666', fontSize: '0.9rem', marginBottom: '1rem' }}>For product inquiries and website help.</p>
           <div style={{ fontWeight: 'bold', fontSize: '1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: 'var(--text-main)' }}>
             <PhoneCall size={20} color="#f57c00" />
-            +91 91234 56789
+            +91 ----- -----
           </div>
         </div>
 

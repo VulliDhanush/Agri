@@ -1,10 +1,13 @@
-// 1. Import 'useState' from React. This is a Hook that lets us add "memory" to our component.
-import { useState } from 'react';
+// 1. Import Hooks from React.
+import { useState, useEffect, useRef } from 'react';
 
-// 2. Import tools from React Router. These let us navigate between pages without refreshing the browser.
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// 2. Import tools from React Router.
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 
-// 3. Import all our custom Components and Pages
+// 3. Import axios for API integration
+import axios from 'axios';
+
+// 4. Import all our custom Components and Pages
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Marketplace from './pages/Marketplace';
@@ -15,12 +18,56 @@ import CartModal from './components/CartModal';
 import FarmerDashboard from './pages/FarmerDashboard';
 import Footer from './components/Footer';
 
-// This is the main Application component. Everything inside here gets rendered to the screen.
-function App() {
+// A wrapper component that intercepts the form submission of the unmodified Login component.
+function LoginWrapper({ onLogin }) {
+  const wrapperRef = useRef(null);
+
+  useEffect(() => {
+    const handleNativeSubmit = (e) => {
+      e.preventDefault(); // Prevent standard page refresh
+      
+      const emailInput = e.target.querySelector('input[type="email"]');
+      const passwordInput = e.target.querySelector('input[type="password"]');
+      if (emailInput && passwordInput) {
+        onLogin(emailInput.value, passwordInput.value);
+      }
+    };
+
+    const element = wrapperRef.current;
+    if (element) {
+      element.addEventListener('submit', handleNativeSubmit);
+    }
+    return () => {
+      if (element) {
+        element.removeEventListener('submit', handleNativeSubmit);
+      }
+    };
+  }, [onLogin]);
+
+  return (
+    <div ref={wrapperRef}>
+      <Login />
+    </div>
+  );
+}
+
+// This is the main application content component.
+// It is wrapped by <Router> in the App component, allowing it to use useNavigate().
+function AppContent() {
+  const navigate = useNavigate();
+
   // --- STATE (Memory of the App) ---
   
-  // Who is currently using the app? Default is 'Customer'
-  const [userRole, setUserRole] = useState('Customer');
+  // Who is currently using the app? Default is 'Customer' or whatever was saved
+  const [userRole, setUserRole] = useState(() => {
+    return localStorage.getItem('userRole') || 'Customer';
+  });
+
+  // Keep track of the currently logged-in user profile
+  const [currentUser, setCurrentUser] = useState(() => {
+    const saved = localStorage.getItem('currentUser');
+    return saved ? JSON.parse(saved) : null;
+  });
 
   // The master list of all products in the store
   const [products, setProducts] = useState([
@@ -32,18 +79,87 @@ function App() {
     { _id: '6', name: 'Red Onions', price: 35, description: 'Spicy and sweet locally grown red onions.', imageUrl: 'https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?auto=format&fit=crop&w=300&q=80' },
     { _id: '7', name: 'Fresh Cauliflower', price: 80, description: 'Large, farm-fresh white cauliflower heads.', imageUrl: 'https://images.unsplash.com/photo-1568584711075-3d021a7c3ca3?auto=format&fit=crop&w=300&q=80' }
   ]);
-  // useState gives us a variable (cartItems) and a function to update it (setCartItems).
-  // We start with an empty array [] because the cart is empty at first.
+
   const [cartItems, setCartItems] = useState([]);
-  
-  // This state remembers whether the shopping cart popup is open (true) or closed (false).
   const [isCartOpen, setIsCartOpen] = useState(false);
-  
-  // This state remembers the list of completed orders.
   const [orders, setOrders] = useState([]);
 
   // --- ACTIONS (Functions that do things) ---
   
+  // Handle Login submission
+  const handleLogin = async (email, password) => {
+    try {
+      // 1. Try backend authentication
+      const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+      
+      if (response.data && response.data.token) {
+        const { token, user } = response.data;
+        localStorage.setItem('token', token);
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        
+        // Map backend user role to frontend role representation
+        const role = user.role === 'farmer' ? 'Farmer' : 'Customer';
+        localStorage.setItem('userRole', role);
+        
+        setUserRole(role);
+        setCurrentUser(user);
+        
+        alert(`Welcome back, ${user.name}! (Authenticated via Server)`);
+        
+        if (role === 'Farmer') {
+          navigate('/farmer');
+        } else {
+          navigate('/');
+        }
+      }
+    } catch (error) {
+      // 2. If it's a network error (server offline), fall back to mock authentication
+      if (!error.response) {
+        console.warn('Backend server offline. Falling back to Demo Mode.');
+        
+        const userName = email.split('@')[0] || 'Demo User';
+        const role = email.toLowerCase().includes('farmer') ? 'Farmer' : 'Customer';
+        
+        const mockUser = {
+          id: 'mock-' + Math.random().toString(36).substr(2, 9),
+          name: userName.charAt(0).toUpperCase() + userName.slice(1),
+          email: email,
+          role: role === 'Farmer' ? 'farmer' : 'consumer'
+        };
+        
+        localStorage.setItem('currentUser', JSON.stringify(mockUser));
+        localStorage.setItem('userRole', role);
+        
+        setUserRole(role);
+        setCurrentUser(mockUser);
+        
+        alert(`Offline/Demo Mode: Logged in as ${mockUser.name} (${role})`);
+        
+        if (role === 'Farmer') {
+          navigate('/farmer');
+        } else {
+          navigate('/');
+        }
+      } else {
+        // If it's a real response error from server (e.g. 400 bad request, wrong password)
+        alert(error.response.data.msg || 'Invalid Credentials');
+      }
+    }
+  };
+
+  // Handle Logout
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('userRole');
+    
+    setCurrentUser(null);
+    setUserRole('Customer');
+    
+    alert('Logged out successfully.');
+    navigate('/');
+  };
+
   // Add a new product to the marketplace
   const handleAddProduct = (newProduct) => {
     const productWithId = { ...newProduct, _id: Math.random().toString(36).substr(2, 9) };
@@ -62,95 +178,86 @@ function App() {
     setProducts(prev => prev.filter(p => p._id !== productId));
   };
   
-  // This function is called when a user clicks "Add to Cart" on a product.
+  // Add a product to the cart
   const handleAddToCart = (product) => {
-    // We take the previous items in the cart (...prev) and add the new product to the end of the list.
     setCartItems(prev => [...prev, product]);
   };
 
-  // This function is called when the user clicks "Proceed to Checkout" in the cart.
+  // Remove a product from the cart (decrease count by one)
+  const handleRemoveFromCart = (product) => {
+    setCartItems(prev => {
+      const idx = prev.map(item => item._id).lastIndexOf(product._id);
+      if (idx !== -1) {
+        const newCart = [...prev];
+        newCart.splice(idx, 1);
+        return newCart;
+      }
+      return prev;
+    });
+  };
+
+  // Checkout cart items
   const handleCheckout = (paymentMethod) => {
-    // If the cart is empty, do nothing.
     if (cartItems.length === 0) return;
     
-    // 1. Calculate the total price of everything in the cart.
     const calculatedTotal = cartItems.reduce((sum, item) => sum + item.price, 0);
 
-    // 2. Create a new "Order" object.
     const newOrder = {
-      // Generate a random ID like 'ORD-A1B2C3D4'
       id: 'ORD-' + Math.random().toString(36).substring(2, 10).toUpperCase(),
-      // Record the exact date and time right now
       time: new Date().toISOString(),
-      // Copy all items from the cart into this order
       items: [...cartItems],
       total: calculatedTotal,
-      // Record the chosen payment method
       paymentMethod: paymentMethod,
-      // Initial status of the order
       status: 'Pending (Not Accepted)'
     };
     
-    // 3. Save this new order into our 'orders' state memory.
-    // We put 'newOrder' at the beginning so the newest order shows up first.
     setOrders(prev => [newOrder, ...prev]);
-    
-    // 4. Empty the shopping cart because they just bought everything!
     setCartItems([]);
-    
-    // 5. Close the cart popup.
     setIsCartOpen(false);
     
-    // 6. Tell the user it worked!
     alert('Order has been placed successfully!');
   };
 
-  // --- WHAT TO RENDER (The HTML/JSX) ---
   return (
-    // The <Router> wraps our whole app so navigation links work.
-    <Router>
-      <div className="app" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        {/* 
-          The Navbar is outside the <Routes> so it appears on EVERY page. 
-          We pass down the number of items in the cart as a "prop" (property).
-        */}
-        <Navbar 
-          cartCount={cartItems.length} 
-          onCartClick={() => setIsCartOpen(true)} 
-          userRole={userRole}
-          setUserRole={setUserRole}
-        />
-        
-        {/* 
-          The CartModal is our popup. It is hidden unless isCartOpen is true.
-          We pass it the items and the checkout function.
-        */}
-        <CartModal 
-          isOpen={isCartOpen} 
-          onClose={() => setIsCartOpen(false)} 
-          cartItems={cartItems} 
-          onCheckout={handleCheckout} 
-        />
-        
-        {/* The <Routes> area decides which Page to show based on the URL. */}
-        <div style={{ flex: 1 }}>
-          <Routes>
-            <Route path="/" element={<Home userRole={userRole} />} />
-            {/* We pass the products list and the handleAddToCart function down to Marketplace */}
-            <Route path="/marketplace" element={<Marketplace products={products} onAddToCart={handleAddToCart} />} />
-            {/* The new Farmer Dashboard gets the products and the functions to add/update/remove them */}
-            <Route path="/farmer" element={<FarmerDashboard products={products} onAddProduct={handleAddProduct} onUpdatePrice={handleUpdatePrice} onRemoveProduct={handleRemoveProduct} />} />
-            <Route path="/services" element={<Services />} />
-            {/* We pass the completed orders down to the Orders page so it can display them */}
-            <Route path="/orders" element={<Orders orders={orders} />} />
-            <Route path="/login" element={<Login />} />
-          </Routes>
-        </div>
-        <Footer />
+    <div className="app" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <Navbar 
+        cartCount={cartItems.length} 
+        onCartClick={() => setIsCartOpen(true)} 
+        userRole={userRole}
+        setUserRole={setUserRole}
+        currentUser={currentUser}
+        onLogout={handleLogout}
+      />
+      
+      <CartModal 
+        isOpen={isCartOpen} 
+        onClose={() => setIsCartOpen(false)} 
+        cartItems={cartItems} 
+        onCheckout={handleCheckout} 
+      />
+      
+      <div style={{ flex: 1 }}>
+        <Routes>
+          <Route path="/" element={<Home userRole={userRole} />} />
+          <Route path="/marketplace" element={<Marketplace products={products} cartItems={cartItems} onAddToCart={handleAddToCart} onRemoveFromCart={handleRemoveFromCart} />} />
+          <Route path="/farmer" element={<FarmerDashboard products={products} onAddProduct={handleAddProduct} onUpdatePrice={handleUpdatePrice} onRemoveProduct={handleRemoveProduct} />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/orders" element={<Orders orders={orders} />} />
+          <Route path="/login" element={<LoginWrapper onLogin={handleLogin} />} />
+        </Routes>
       </div>
+      <Footer />
+    </div>
+  );
+}
+
+// This is the root component rendering the router.
+function App() {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 }
 
-// Export the App so main.jsx can use it.
 export default App;

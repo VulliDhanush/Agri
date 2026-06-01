@@ -11,18 +11,30 @@ import { Sprout, ShoppingCart, UserCircle } from 'lucide-react';
  * 1. cartCount: The number of items currently in the cart
  * 2. onCartClick: The function to run when the user clicks the shopping cart icon
  */
-export default function Navbar({ cartCount, onCartClick, userRole, setUserRole }) {
+export default function Navbar({ cartCount, onCartClick, userRole, setUserRole, currentUser, onLogout }) {
   const navigate = useNavigate();
   const location = useLocation();
 
   // Function to handle switching roles
   const handleRoleChange = (role) => {
-    setUserRole(role);
-    
-    // Security/UX: If they are on the Farmer Dashboard and switch to Customer, 
-    // kick them back to the Home page so they can't edit products!
-    if (role === 'Customer' && location.pathname === '/farmer') {
-      navigate('/');
+    if (role === userRole) return;
+
+    const confirmChange = window.confirm(
+      "Warning: Switching roles will reload the page and reset all active session data (cart items, orders, and products). Proceed?"
+    );
+
+    if (confirmChange) {
+      // Clear current user/token and set the new role
+      localStorage.setItem('userRole', role);
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('token');
+
+      // Force a full reload to clear all React states
+      if (role === 'Farmer') {
+        window.location.href = '/farmer';
+      } else {
+        window.location.href = '/';
+      }
     }
   };
 
@@ -131,8 +143,29 @@ export default function Navbar({ cartCount, onCartClick, userRole, setUserRole }
             )}
           </div>
           
-          {/* The Login Button */}
-          <Link to="/login" className="btn btn-primary" style={{ padding: '0.5rem 1.5rem' }}>Login</Link>
+          {/* The Login Button or Logged-in User Profile */}
+          {currentUser ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-main)', fontWeight: 'bold' }}>
+                <UserCircle size={20} color="var(--primary-color)" />
+                <span>Hi, {currentUser.name || 'User'}</span>
+              </div>
+              <button 
+                onClick={onLogout} 
+                className="btn" 
+                style={{ 
+                  padding: '0.5rem 1.5rem', 
+                  backgroundColor: 'rgba(229, 57, 53, 0.1)', 
+                  color: '#d32f2f', 
+                  border: '1px solid rgba(229, 57, 53, 0.3)'
+                }}
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <Link to="/login" className="btn btn-primary" style={{ padding: '0.5rem 1.5rem' }}>Login</Link>
+          )}
         </div>
       </div>
     </nav>
