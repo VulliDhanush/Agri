@@ -38,7 +38,7 @@ export default function Footer() {
           <p style={{ color: '#666', fontSize: '0.9rem', marginBottom: '1rem' }}>For product inquiries and website help.</p>
           <div style={{ fontWeight: 'bold', fontSize: '1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: 'var(--text-main)' }}>
             <PhoneCall size={20} color="#f57c00" />
-            +91 ----- -----
+            +91 ----- -----(Demo)
           </div>
         </div>
 
