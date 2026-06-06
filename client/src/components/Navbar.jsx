@@ -148,7 +148,7 @@ export default function Navbar({ cartCount, onCartClick, userRole, setUserRole, 
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-main)', fontWeight: 'bold' }}>
                 <UserCircle size={20} color="var(--primary-color)" />
-                <span>Hi, {currentUser.name || 'User'}</span>
+                <span>Hello Welcome, {currentUser.name || 'User'}</span>
               </div>
               <button 
                 onClick={onLogout} 
