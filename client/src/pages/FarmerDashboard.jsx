@@ -76,7 +76,7 @@ export default function FarmerDashboard({ products, onAddProduct, onUpdatePrice,
                   required 
                   value={name} 
                   onChange={(e) => setName(e.target.value)}
-                  style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
+                  style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid var(--input-border)', backgroundColor: 'var(--input-bg)', color: 'var(--text-main)' }}
                   placeholder="e.g. Fresh Spinach"
                 />
               </div>
@@ -89,7 +89,7 @@ export default function FarmerDashboard({ products, onAddProduct, onUpdatePrice,
                   required 
                   value={price} 
                   onChange={(e) => setPrice(e.target.value)}
-                  style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
+                  style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid var(--input-border)', backgroundColor: 'var(--input-bg)', color: 'var(--text-main)' }}
                   placeholder="e.g. 2.50"
                 />
               </div>
@@ -99,7 +99,7 @@ export default function FarmerDashboard({ products, onAddProduct, onUpdatePrice,
                 <textarea 
                   value={description} 
                   onChange={(e) => setDescription(e.target.value)}
-                  style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc', minHeight: '80px' }}
+                  style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid var(--input-border)', backgroundColor: 'var(--input-bg)', color: 'var(--text-main)', minHeight: '80px' }}
                   placeholder="Briefly describe the product..."
                 />
               </div>
@@ -111,8 +111,8 @@ export default function FarmerDashboard({ products, onAddProduct, onUpdatePrice,
                 <div style={{ 
                   width: '100%', 
                   height: '150px', 
-                  backgroundColor: 'rgba(0,0,0,0.02)', 
-                  border: '2px dashed #ccc', 
+                  backgroundColor: 'var(--badge-bg)', 
+                  border: '2px dashed var(--input-border)', 
                   borderRadius: '8px',
                   display: 'flex',
                   alignItems: 'center',
@@ -124,7 +124,7 @@ export default function FarmerDashboard({ products, onAddProduct, onUpdatePrice,
                   {imageUrl ? (
                     <img src={imageUrl} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   ) : (
-                    <div style={{ color: '#888', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <div style={{ color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                       <Upload size={32} style={{ marginBottom: '0.5rem', opacity: 0.5 }} />
                       <span style={{ fontSize: '0.9rem' }}>No image selected</span>
                     </div>
@@ -157,13 +157,13 @@ export default function FarmerDashboard({ products, onAddProduct, onUpdatePrice,
                     />
                   </label>
 
-                  <div style={{ textAlign: 'center', color: '#aaa', fontSize: '0.85rem', fontWeight: 'bold' }}>— OR —</div>
+                  <div style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: 'bold' }}>— OR —</div>
                   
                   <input 
                     type="url" 
                     value={imageUrl} 
                     onChange={(e) => setImageUrl(e.target.value)}
-                    style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid #ddd' }}
+                    style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--input-border)', backgroundColor: 'var(--input-bg)', color: 'var(--text-main)' }}
                     placeholder="Paste an Image URL here..."
                   />
                 </div>
@@ -180,7 +180,7 @@ export default function FarmerDashboard({ products, onAddProduct, onUpdatePrice,
             
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
               <h3 style={{ color: 'var(--primary-color)', margin: 0 }}>Current Inventory</h3>
-              <span style={{ fontSize: '0.9rem', color: '#666', fontWeight: 'bold', backgroundColor: 'rgba(0,0,0,0.05)', padding: '0.25rem 0.75rem', borderRadius: '20px' }}>
+              <span style={{ fontSize: '0.9rem', color: 'var(--text-main)', fontWeight: 'bold', backgroundColor: 'var(--badge-bg)', padding: '0.25rem 0.75rem', borderRadius: '20px' }}>
                 {products.length} Items
               </span>
             </div>
@@ -205,7 +205,7 @@ export default function FarmerDashboard({ products, onAddProduct, onUpdatePrice,
                     />
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', overflow: 'hidden' }}>
                       <div style={{ fontWeight: 'bold', fontSize: '1.1rem', color: 'var(--text-main)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{product.name}</div>
-                      <div style={{ color: '#666', fontSize: '0.85rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         {product.description}
                       </div>
                     </div>
@@ -231,7 +231,7 @@ export default function FarmerDashboard({ products, onAddProduct, onUpdatePrice,
                         <Check size={16} />
                       </button>
                       <button 
-                        style={{ background: '#e0e0e0', color: '#333', border: 'none', borderRadius: '4px', padding: '0.4rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} 
+                        style={{ backgroundColor: 'var(--cancel-btn-bg)', color: 'var(--cancel-btn-color)', border: 'none', borderRadius: '4px', padding: '0.4rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} 
                         onClick={() => setEditingId(null)}
                         title="Cancel"
                       >
@@ -241,15 +241,15 @@ export default function FarmerDashboard({ products, onAddProduct, onUpdatePrice,
                   ) : (
                     <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', marginLeft: '1rem' }}>
                       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                        <span style={{ fontSize: '0.75rem', color: '#888', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Price</span>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Price</span>
                         <span style={{ fontSize: '1.25rem', fontWeight: 'bold', color: 'var(--primary-color)' }}>
-                          ₹{product.price.toFixed(2)} <span style={{ fontSize: '0.9rem', color: '#666', fontWeight: 'normal' }}>/ kg</span>
+                          ₹{product.price.toFixed(2)} <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: 'normal' }}>/ kg</span>
                         </span>
                       </div>
                       
                       <button 
                         style={{ 
-                          background: 'rgba(0,0,0,0.04)', 
+                          background: 'var(--icon-button-bg)', 
                           border: 'none', 
                           padding: '0.6rem', 
                           borderRadius: '50%', 
@@ -257,7 +257,7 @@ export default function FarmerDashboard({ products, onAddProduct, onUpdatePrice,
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          color: '#555',
+                          color: 'var(--icon-button-color)',
                           transition: 'background 0.2s, color 0.2s'
                         }}
                         onClick={() => {
@@ -266,7 +266,7 @@ export default function FarmerDashboard({ products, onAddProduct, onUpdatePrice,
                         }}
                         title="Edit Price"
                         onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--primary-color)'; e.currentTarget.style.color = '#fff'; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(0,0,0,0.04)'; e.currentTarget.style.color = '#555'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--icon-button-bg)'; e.currentTarget.style.color = 'var(--icon-button-color)'; }}
                       >
                         <Edit2 size={18} />
                       </button>

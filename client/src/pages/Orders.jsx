@@ -14,7 +14,7 @@ export default function Orders({ orders }) {
                 <div style={{ 
                   display: 'flex', 
                   justifyContent: 'space-between', 
-                  borderBottom: '1px solid rgba(0,0,0,0.1)', 
+                  borderBottom: '1px solid var(--border-color)', 
                   paddingBottom: '1rem', 
                   marginBottom: '1rem',
                   flexWrap: 'wrap',
@@ -29,7 +29,7 @@ export default function Orders({ orders }) {
                 </div>
 
                 {/* NEW: Payment and Status Info */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem', padding: '0.75rem', backgroundColor: 'rgba(0,0,0,0.03)', borderRadius: '8px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem', padding: '0.75rem', backgroundColor: 'var(--badge-bg)', borderRadius: '8px' }}>
                   <div>
                     <strong>Payment:</strong> {order.paymentMethod || 'Online'}
                   </div>
@@ -59,7 +59,7 @@ export default function Orders({ orders }) {
                 <div style={{ 
                   textAlign: 'right', 
                   paddingTop: '1rem', 
-                  borderTop: '1px solid rgba(0,0,0,0.1)',
+                  borderTop: '1px solid var(--border-color)',
                   fontWeight: 'bold', 
                   fontSize: '1.2rem',
                   color: 'var(--primary-color)'

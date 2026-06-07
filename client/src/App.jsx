@@ -57,6 +57,21 @@ function AppContent() {
   const navigate = useNavigate();
 
   // --- STATE (Memory of the App) ---
+
+  // Theme state: 'light' or 'dark'
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('theme') || 'light';
+  });
+
+  // Apply the theme to the root <html> element and save to localStorage
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
+  };
   
   // Who is currently using the app? Default is 'Customer' or whatever was saved
   const [userRole, setUserRole] = useState(() => {
@@ -227,6 +242,8 @@ function AppContent() {
         setUserRole={setUserRole}
         currentUser={currentUser}
         onLogout={handleLogout}
+        theme={theme}
+        toggleTheme={toggleTheme}
       />
       
       <CartModal 

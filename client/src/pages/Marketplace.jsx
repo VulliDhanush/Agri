@@ -38,7 +38,7 @@ export default function Marketplace({ products, cartItems = [], onAddToCart, onR
               <p>{product.description}</p>
               
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto', paddingTop: '1rem' }}>
-                <span className="card-price">₹{product.price.toFixed(2)} <span style={{ fontSize: '1rem', color: '#666', fontWeight: 'normal' }}>/ kg</span></span>
+                <span className="card-price">₹{product.price.toFixed(2)} <span style={{ fontSize: '1rem', color: 'var(--text-muted)', fontWeight: 'normal' }}>/ kg</span></span>
                 
                 {/* 
                   If the product is already in the cart, show the - | count | + controls.
@@ -52,8 +52,9 @@ export default function Marketplace({ products, cartItems = [], onAddToCart, onR
                     border: '2px solid var(--primary-color)', 
                     borderRadius: '50px', 
                     padding: '3px',
-                    backgroundColor: '#fff',
-                    boxShadow: '0 4px 12px rgba(46, 125, 50, 0.1)'
+                    backgroundColor: 'var(--card-bg-solid)',
+                    boxShadow: 'var(--shadow)',
+                    transition: 'background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease'
                   }}>
                     <button 
                       onClick={() => onRemoveFromCart(product)}

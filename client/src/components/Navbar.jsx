@@ -3,7 +3,7 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 // 2. Import a few pre-made icons from the lucide-react library
-import { Sprout, ShoppingCart, UserCircle } from 'lucide-react';
+import { Sprout, ShoppingCart, UserCircle, Sun, Moon } from 'lucide-react';
 
 /**
  * Navbar Component
@@ -11,7 +11,7 @@ import { Sprout, ShoppingCart, UserCircle } from 'lucide-react';
  * 1. cartCount: The number of items currently in the cart
  * 2. onCartClick: The function to run when the user clicks the shopping cart icon
  */
-export default function Navbar({ cartCount, onCartClick, userRole, setUserRole, currentUser, onLogout }) {
+export default function Navbar({ cartCount, onCartClick, userRole, setUserRole, currentUser, onLogout, theme, toggleTheme }) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -56,15 +56,15 @@ export default function Navbar({ cartCount, onCartClick, userRole, setUserRole, 
             marginRight: '1rem', 
             display: 'flex', 
             alignItems: 'center',
-            backgroundColor: 'rgba(0,0,0,0.06)',
+            backgroundColor: 'var(--role-toggle-bg)',
             borderRadius: '30px',
             padding: '4px',
           }}>
             <button 
               onClick={() => handleRoleChange('Customer')}
               style={{
-                background: userRole === 'Customer' ? '#fff' : 'transparent',
-                color: userRole === 'Customer' ? 'var(--text-main)' : '#666',
+                background: userRole === 'Customer' ? 'var(--role-btn-bg)' : 'transparent',
+                color: userRole === 'Customer' ? 'var(--text-main)' : 'var(--role-btn-color)',
                 border: 'none',
                 padding: '6px 16px',
                 borderRadius: '20px',
@@ -72,7 +72,7 @@ export default function Navbar({ cartCount, onCartClick, userRole, setUserRole, 
                 fontSize: '0.85rem',
                 cursor: 'pointer',
                 transition: 'all 0.3s ease',
-                boxShadow: userRole === 'Customer' ? '0 2px 8px rgba(0,0,0,0.1)' : 'none',
+                boxShadow: userRole === 'Customer' ? 'var(--shadow)' : 'none',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px'
@@ -86,7 +86,7 @@ export default function Navbar({ cartCount, onCartClick, userRole, setUserRole, 
               onClick={() => handleRoleChange('Farmer')}
               style={{
                 background: userRole === 'Farmer' ? 'var(--primary-color)' : 'transparent',
-                color: userRole === 'Farmer' ? '#fff' : '#666',
+                color: userRole === 'Farmer' ? '#fff' : 'var(--role-btn-color)',
                 border: 'none',
                 padding: '6px 16px',
                 borderRadius: '20px',
@@ -119,12 +119,39 @@ export default function Navbar({ cartCount, onCartClick, userRole, setUserRole, 
             <Link to="/farmer" style={{ color: 'var(--primary-color)', fontWeight: 'bold' }}>Dashboard</Link>
           )}
           
+          {/* Theme Toggle Button */}
+          <button 
+            onClick={toggleTheme}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '8px',
+              borderRadius: '50%',
+              backgroundColor: 'var(--icon-button-bg)',
+              color: 'var(--text-main)',
+              transition: 'all 0.3s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.1) rotate(15deg)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
+            }}
+            title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+          >
+            {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+          </button>
+
           {/* 
             The Shopping Cart Icon Wrapper.
             Notice the onClick={onCartClick}. When clicked, it tells App.jsx to open the modal!
           */}
           <div 
-            style={{ position: 'relative', display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+            style={{ position: 'relative', display: 'flex', alignItems: 'center', cursor: 'pointer', color: 'var(--text-main)' }}
             onClick={onCartClick}
           >
             <ShoppingCart size={24} />
