@@ -136,7 +136,7 @@ export default function Navbar({ cartCount, onCartClick, userRole, setUserRole, 
               transition: 'all 0.3s ease',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'scale(1.1) rotate(15deg)';
+              e.currentTarget.style.transform = 'scale(1.1) rotate(12deg)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
