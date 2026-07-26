@@ -45,7 +45,7 @@ export default function Navbar({ cartCount, onCartClick, userRole, setUserRole, 
         {/* The Logo Link - Clicking this goes to the home page ("/") */}
         <Link to="/" className="nav-logo">
           <Sprout size={32} />
-          AgriLink
+          Agri Link
         </Link>
         
         {/* The Navigation Links */}
