@@ -3,6 +3,7 @@ import { AppContext } from '../context/AppContext';
 
 export default function Orders() {
   const { orders } = useContext(AppContext);
+
   return (
     <div className="page-wrapper">
       <div className="container">
@@ -12,18 +13,10 @@ export default function Orders() {
             <p>You have no past orders yet.</p>
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          <div className="orders-list">
             {orders.map((order) => (
-              <div key={order.id} className="card glass" style={{ padding: '1.5rem' }}>
-                <div style={{ 
-                  display: 'flex', 
-                  justifyContent: 'space-between', 
-                  borderBottom: '1px solid var(--border-color)', 
-                  paddingBottom: '1rem', 
-                  marginBottom: '1rem',
-                  flexWrap: 'wrap',
-                  gap: '1rem'
-                }}>
+              <div key={order.id} className="card glass order-card">
+                <div className="order-card-header">
                   <div>
                     <strong style={{ color: 'var(--primary-color)' }}>Order ID:</strong> {order.id}
                   </div>
@@ -32,25 +25,27 @@ export default function Orders() {
                   </div>
                 </div>
 
-                {/* NEW: Payment and Status Info */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem', padding: '0.75rem', backgroundColor: 'var(--badge-bg)', borderRadius: '8px' }}>
+                <div className="order-status-banner">
                   <div>
                     <strong>Payment:</strong> {order.paymentMethod || 'Online'}
                   </div>
                   <div>
-                    <strong>Status:</strong> <span style={{ color: order.status?.includes('Pending') ? '#d97706' : 'var(--primary-color)', fontWeight: 'bold' }}>{order.status || 'Pending'}</span>
+                    <strong>Status:</strong>{' '}
+                    <span style={{ color: order.status?.includes('Pending') ? '#d97706' : 'var(--primary-color)', fontWeight: 'bold' }}>
+                      {order.status || 'Pending'}
+                    </span>
                   </div>
                 </div>
                 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1rem' }}>
+                <div className="order-items-column">
                   {order.items.map((item, index) => (
-                    <div key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div key={index} className="order-item-line">
                       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                         {item.imageUrl && (
                           <img 
                             src={item.imageUrl} 
                             alt={item.name} 
-                            style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} 
+                            className="order-item-thumb"
                           />
                         )}
                         <span>{item.name}</span>
@@ -60,14 +55,7 @@ export default function Orders() {
                   ))}
                 </div>
                 
-                <div style={{ 
-                  textAlign: 'right', 
-                  paddingTop: '1rem', 
-                  borderTop: '1px solid var(--border-color)',
-                  fontWeight: 'bold', 
-                  fontSize: '1.2rem',
-                  color: 'var(--primary-color)'
-                }}>
+                <div className="order-total-bar" style={{ justifyContent: 'flex-end', gap: '0.5rem', fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--primary-color)' }}>
                   Total: ₹{order.total.toFixed(2)}
                 </div>
               </div>

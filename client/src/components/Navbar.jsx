@@ -53,32 +53,11 @@ export default function Navbar() {
         {/* The Navigation Links */}
         <div className="nav-links">
           
-          {/* ROLE SELECTOR: Segmented Toggle Control */}
-          <div style={{ 
-            marginRight: '1rem', 
-            display: 'flex', 
-            alignItems: 'center',
-            backgroundColor: 'var(--role-toggle-bg)',
-            borderRadius: '30px',
-            padding: '4px',
-          }}>
+          {/* ROLE SELECTOR */}
+          <div className="role-selector">
             <button 
               onClick={() => handleRoleChange('Customer')}
-              style={{
-                background: userRole === 'Customer' ? 'var(--role-btn-bg)' : 'transparent',
-                color: userRole === 'Customer' ? 'var(--text-main)' : 'var(--role-btn-color)',
-                border: 'none',
-                padding: '6px 16px',
-                borderRadius: '20px',
-                fontWeight: 'bold',
-                fontSize: '0.85rem',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                boxShadow: userRole === 'Customer' ? 'var(--shadow)' : 'none',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px'
-              }}
+              className={`role-btn ${userRole === 'Customer' ? 'active' : ''}`}
             >
               <UserCircle size={16} />
               Customer
@@ -86,21 +65,7 @@ export default function Navbar() {
 
             <button 
               onClick={() => handleRoleChange('Farmer')}
-              style={{
-                background: userRole === 'Farmer' ? 'var(--primary-color)' : 'transparent',
-                color: userRole === 'Farmer' ? '#fff' : 'var(--role-btn-color)',
-                border: 'none',
-                padding: '6px 16px',
-                borderRadius: '20px',
-                fontWeight: 'bold',
-                fontSize: '0.85rem',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                boxShadow: userRole === 'Farmer' ? '0 2px 8px rgba(46, 125, 50, 0.4)' : 'none',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px'
-              }}
+              className={`role-btn farmer ${userRole === 'Farmer' ? 'active' : ''}`}
             >
               <Sprout size={16} />
               Farmer
@@ -109,88 +74,48 @@ export default function Navbar() {
 
           <Link to="/marketplace">Marketplace</Link>
           
-          {/* SHOW SERVICES & RENTALS ONLY IF ROLE IS FARMER */}
           {userRole === 'Farmer' && (
             <Link to="/services">Services & Rentals</Link>
           )}
 
           <Link to="/orders">My Orders</Link>
 
-          {/* SHOW FARMER DASHBOARD ONLY IF ROLE IS FARMER */}
           {userRole === 'Farmer' && (
-            <Link to="/farmer" style={{ color: 'var(--primary-color)', fontWeight: 'bold' }}>Dashboard</Link>
+            <Link to="/farmer" className="nav-dashboard-link">Dashboard</Link>
           )}
           
           {/* Theme Toggle Button */}
           <button 
             onClick={toggleTheme}
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '8px',
-              borderRadius: '50%',
-              backgroundColor: 'var(--icon-button-bg)',
-              color: 'var(--text-main)',
-              transition: 'all 0.3s ease',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'scale(1.1) rotate(12deg)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
-            }}
+            className="theme-toggle-btn"
             title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
           >
             {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
           </button>
 
-          {/* Shopping Cart Icon Wrapper */}
-          <div 
-            style={{ position: 'relative', display: 'flex', alignItems: 'center', cursor: 'pointer', color: 'var(--text-main)' }}
-            onClick={() => setIsCartOpen(true)}
-          >
+          {/* Shopping Cart Icon */}
+          <div className="nav-cart-btn" onClick={() => setIsCartOpen(true)}>
             <ShoppingCart size={24} />
-            
-            {/* 
-              This is called "Conditional Rendering".
-              It means: "ONLY show this little red badge IF the cartCount is greater than zero."
-            */}
             {cartCount > 0 && (
-              <span style={{
-                position: 'absolute', top: '-8px', right: '-12px', background: 'var(--accent-color)', 
-                color: '#000', borderRadius: '50%', padding: '2px 6px', fontSize: '12px', fontWeight: 'bold'
-              }}>
+              <span className="cart-badge">
                 {cartCount}
               </span>
             )}
           </div>
           
-          {/* The Login Button or Logged-in User Profile */}
+          {/* User Profile / Login */}
           {currentUser ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-main)', fontWeight: 'bold' }}>
+            <div className="user-profile-bar">
+              <div className="user-profile-name">
                 <UserCircle size={20} color="var(--primary-color)" />
                 <span>Hello Welcome, {currentUser.name || 'User'}</span>
               </div>
-              <button 
-                onClick={onLogout} 
-                className="btn" 
-                style={{ 
-                  padding: '0.5rem 1.5rem', 
-                  backgroundColor: 'rgba(229, 57, 53, 0.1)', 
-                  color: '#d32f2f', 
-                  border: '1px solid rgba(229, 57, 53, 0.3)'
-                }}
-              >
+              <button onClick={handleLogout} className="btn-logout">
                 Logout
               </button>
             </div>
           ) : (
-            <Link to="/login" className="btn btn-primary" style={{ padding: '0.5rem 1.5rem' }}>Login</Link>
+            <Link to="/login" className="btn btn-primary btn-sm">Login</Link>
           )}
         </div>
       </div>

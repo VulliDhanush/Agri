@@ -12,27 +12,27 @@ export default function Login() {
   };
 
   return (
-    <div className="page-wrapper" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div className="card glass" style={{ maxWidth: '400px', width: '100%', padding: '2rem' }}>
+    <div className="page-wrapper login-wrapper">
+      <div className="card glass login-card">
         <h2 className="text-center">Welcome Back</h2>
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <div>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Email</label>
+        <form onSubmit={handleSubmit} className="login-form">
+          <div className="form-group">
+            <label className="form-label">Email</label>
             <input 
               type="email" 
               value={email} 
               onChange={(e) => setEmail(e.target.value)}
-              style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--input-border)', backgroundColor: 'var(--input-bg)', color: 'var(--text-main)' }}
+              className="form-input"
               required 
             />
           </div>
-          <div>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Password</label>
+          <div className="form-group">
+            <label className="form-label">Password</label>
             <input 
               type="password" 
               value={password} 
               onChange={(e) => setPassword(e.target.value)}
-              style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--input-border)', backgroundColor: 'var(--input-bg)', color: 'var(--text-main)' }}
+              className="form-input"
               required 
             />
           </div>

@@ -38,67 +38,19 @@ export default function Marketplace() {
                   Otherwise, show the "Add to Cart" button.
                 */}
                 {getProductCount(product._id) > 0 ? (
-                  <div style={{ 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    gap: '0.75rem', 
-                    border: '2px solid var(--primary-color)', 
-                    borderRadius: '50px', 
-                    padding: '3px',
-                    backgroundColor: 'var(--card-bg-solid)',
-                    boxShadow: 'var(--shadow)',
-                    transition: 'background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease'
-                  }}>
+                  <div className="qty-control-pill">
                     <button 
                       onClick={() => handleRemoveFromCart(product)}
-                      style={{ 
-                        backgroundColor: 'var(--primary-color)', 
-                        color: '#fff', 
-                        border: 'none', 
-                        borderRadius: '50%', 
-                        width: '32px', 
-                        height: '32px', 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'center', 
-                        fontWeight: 'bold', 
-                        fontSize: '1.4rem', 
-                        cursor: 'pointer',
-                        transition: 'var(--transition)'
-                      }}
-                      onMouseEnter={(e) => e.target.style.backgroundColor = 'var(--primary-light)'}
-                      onMouseLeave={(e) => e.target.style.backgroundColor = 'var(--primary-color)'}
+                      className="qty-btn"
                     >
                       -
                     </button>
-                    <span style={{ 
-                      fontWeight: '800', 
-                      fontSize: '1.15rem', 
-                      minWidth: '24px', 
-                      textAlign: 'center',
-                      color: 'var(--text-main)' 
-                    }}>
+                    <span className="qty-count">
                       {getProductCount(product._id)}
                     </span>
                     <button 
-                      onClick={() => onAddToCart(product)}
-                      style={{ 
-                        backgroundColor: 'var(--primary-color)', 
-                        color: '#fff', 
-                        border: 'none', 
-                        borderRadius: '50%', 
-                        width: '32px', 
-                        height: '32px', 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'center', 
-                        fontWeight: 'bold', 
-                        fontSize: '1.2rem', 
-                        cursor: 'pointer',
-                        transition: 'var(--transition)'
-                      }}
-                      onMouseEnter={(e) => e.target.style.backgroundColor = 'var(--primary-light)'}
-                      onMouseLeave={(e) => e.target.style.backgroundColor = 'var(--primary-color)'}
+                      onClick={() => handleAddToCart(product)}
+                      className="qty-btn"
                     >
                       +
                     </button>
