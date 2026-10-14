@@ -1,16 +1,16 @@
 // 1. Import Express and create a router to handle our authentication paths
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
 // 2. Import security libraries
 // bcryptjs is used to scramble (hash) passwords so they aren't saved as plain text
-const bcrypt = require('bcryptjs');
+import bcrypt from 'bcryptjs';
 // jsonwebtoken (JWT) creates digital "ID cards" so users stay logged in securely
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
 // 3. Import our custom security middleware and the User database model
-const auth = require('../middleware/auth');
-const User = require('../models/User');
+import auth from '../middleware/auth.js';
+import User from '../models/User.js';
 
 /**
  * ROUTE 1: REGISTER A NEW USER
@@ -125,4 +125,4 @@ router.get('/me', auth, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

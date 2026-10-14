@@ -1,4 +1,9 @@
-export default function Orders({ orders }) {
+import { useContext } from 'react';
+import { AppContext } from '../context/AppContext';
+
+export default function Orders(props) {
+  const context = useContext(AppContext) || {};
+  const orders = props.orders ?? context.orders ?? [];
   return (
     <div className="page-wrapper">
       <div className="container">

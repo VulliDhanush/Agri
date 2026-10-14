@@ -1,16 +1,13 @@
-// 1. Import React Hooks:
-// - We removed useState and useEffect because App.jsx is now handling the data!
-
-// 2. Import axios, a popular library used to make HTTP requests to a backend server.
+import { useContext } from 'react';
 import axios from 'axios';
+import { AppContext } from '../context/AppContext';
 
-/**
- * Marketplace Page Component
- * It receives two props from App.jsx:
- * 1. products: The master list of all products in the store.
- * 2. onAddToCart: The function to run when the user clicks "Add to Cart".
- */
-export default function Marketplace({ products, cartItems = [], onAddToCart, onRemoveFromCart }) {
+export default function Marketplace(props) {
+  const context = useContext(AppContext) || {};
+  const products = props.products ?? context.products ?? [];
+  const cartItems = props.cartItems ?? context.cartItems ?? [];
+  const onAddToCart = props.onAddToCart ?? context.handleAddToCart;
+  const onRemoveFromCart = props.onRemoveFromCart ?? context.handleRemoveFromCart;
   // Helper to count how many copies of this product are in the cart
   const getProductCount = (productId) => {
     return cartItems.filter(item => item._id === productId).length;

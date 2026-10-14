@@ -1,14 +1,14 @@
 // 1. Import Express, the framework we use to build our server API
-const express = require('express');
+import express from 'express';
 
 // 2. Create a "router". This acts like a mini-app that only handles routes starting with "/api/products"
 const router = express.Router();
 
 // 3. Import our custom security middleware. This function checks if a user is logged in.
-const auth = require('../middleware/auth');
+import auth from '../middleware/auth.js';
 
 // 4. Import the Product model. This represents the "Products" collection in our MongoDB database.
-const Product = require('../models/Product');
+import Product from '../models/Product.js';
 
 /**
  * ROUTE 1: GET ALL PRODUCTS
@@ -75,4 +75,4 @@ router.post('/', auth, async (req, res) => {
 });
 
 // Finally, we export this router so our main server file can use it.
-module.exports = router;
+export default router;

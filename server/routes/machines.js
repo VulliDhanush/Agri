@@ -1,10 +1,10 @@
 // 1. Import Express and create a router
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
 // 2. Import our custom security middleware and the Machine model
-const auth = require('../middleware/auth');
-const Machine = require('../models/Machine');
+import auth from '../middleware/auth.js';
+import Machine from '../models/Machine.js';
 
 /**
  * ROUTE 1: GET ALL AVAILABLE MACHINES
@@ -64,4 +64,4 @@ router.post('/', auth, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

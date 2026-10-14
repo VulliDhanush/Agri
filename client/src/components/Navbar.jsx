@@ -1,17 +1,18 @@
-// 1. Import Link, useNavigate, and useLocation from React Router. 
-// We use <Link> instead of standard HTML <a> tags so the page doesn't refresh when we click a link!
+import { useContext } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-
-// 2. Import a few pre-made icons from the lucide-react library
 import { Sprout, ShoppingCart, UserCircle, Sun, Moon } from 'lucide-react';
+import { AppContext } from '../context/AppContext';
 
-/**
- * Navbar Component
- * It receives props (properties/data passed down from App.jsx):
- * 1. cartCount: The number of items currently in the cart
- * 2. onCartClick: The function to run when the user clicks the shopping cart icon
- */
-export default function Navbar({ cartCount, onCartClick, userRole, setUserRole, currentUser, onLogout, theme, toggleTheme }) {
+export default function Navbar(props) {
+  const context = useContext(AppContext) || {};
+  const cartCount = props.cartCount ?? context.cartCount ?? 0;
+  const onCartClick = props.onCartClick ?? (() => context.setIsCartOpen?.(true));
+  const userRole = props.userRole ?? context.userRole;
+  const currentUser = props.currentUser ?? context.currentUser;
+  const onLogout = props.onLogout ?? context.handleLogout;
+  const theme = props.theme ?? context.theme;
+  const toggleTheme = props.toggleTheme ?? context.toggleTheme;
+
   const navigate = useNavigate();
   const location = useLocation();
 

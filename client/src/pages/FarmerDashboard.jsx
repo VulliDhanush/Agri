@@ -1,7 +1,13 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Upload, Edit2, Check, X as CloseIcon, Trash2 } from 'lucide-react';
+import { AppContext } from '../context/AppContext';
 
-export default function FarmerDashboard({ products, onAddProduct, onUpdatePrice, onRemoveProduct }) {
+export default function FarmerDashboard(props) {
+  const context = useContext(AppContext) || {};
+  const products = props.products ?? context.products ?? [];
+  const onAddProduct = props.onAddProduct ?? context.handleAddProduct;
+  const onUpdatePrice = props.onUpdatePrice ?? context.handleUpdatePrice;
+  const onRemoveProduct = props.onRemoveProduct ?? context.handleRemoveProduct;
   // State for the "Add Product" form
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');

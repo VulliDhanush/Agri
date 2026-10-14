@@ -1,10 +1,10 @@
 // 1. Import Express and create a router
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
 // 2. Import our custom security middleware and the Job model
-const auth = require('../middleware/auth');
-const Job = require('../models/Job');
+import auth from '../middleware/auth.js';
+import Job from '../models/Job.js';
 
 /**
  * ROUTE 1: GET ALL OPEN JOBS
@@ -65,4 +65,4 @@ router.post('/', auth, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

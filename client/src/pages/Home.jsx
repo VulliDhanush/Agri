@@ -1,15 +1,11 @@
-// 1. Import the Link component from React Router to handle page navigation without refreshing
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { ShoppingBasket, Tractor } from 'lucide-react';
+import { AppContext } from '../context/AppContext';
 
-// 2. Import some vector icons (like SVG images) to make the page look nice
-import { ShoppingBasket, Tractor, Users } from 'lucide-react';
-
-/**
- * Home Component
- * This is a standard "Presentational Component". It doesn't have any complex State or Logic.
- * It simply returns the JSX (HTML) that makes up the landing page of the website.
- */
-export default function Home({ userRole }) {
+export default function Home(props) {
+  const context = useContext(AppContext) || {};
+  const userRole = props.userRole ?? context.userRole;
   return (
     // 'className' is the React version of the HTML 'class' attribute.
     <div className="page-wrapper">

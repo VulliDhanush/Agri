@@ -1,16 +1,13 @@
-// Import an 'X' icon to use as our close button
+import { useState, useContext } from 'react';
 import { X } from 'lucide-react';
-import { useState } from 'react';
+import { AppContext } from '../context/AppContext';
 
-/**
- * CartModal Component (The Shopping Cart Popup)
- * It receives four "props" from App.jsx:
- * - isOpen: A boolean (true/false) telling us if the popup should be visible
- * - onClose: A function to run when the user clicks the "X" button
- * - cartItems: An array containing the products they want to buy
- * - onCheckout: A function to run when they click "Proceed to Checkout"
- */
-export default function CartModal({ isOpen, onClose, cartItems, onCheckout }) {
+export default function CartModal(props) {
+  const context = useContext(AppContext) || {};
+  const isOpen = props.isOpen ?? context.isCartOpen;
+  const onClose = props.onClose ?? (() => context.setIsCartOpen?.(false));
+  const cartItems = props.cartItems ?? context.cartItems ?? [];
+  const onCheckout = props.onCheckout ?? context.handleCheckout;
   // Add state to remember the selected payment method
   const [paymentMethod, setPaymentMethod] = useState('Cash on Delivery (COD)');
 

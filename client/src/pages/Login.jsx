@@ -1,13 +1,19 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { AppContext } from '../context/AppContext';
 
-export default function Login() {
+export default function Login(props) {
+  const context = useContext(AppContext) || {};
+  const onLogin = props.onLogin ?? context.handleLogin;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // To be integrated with backend API
-    console.log('Login attempt:', { email, password });
+    if (onLogin) {
+      onLogin(email, password);
+    } else {
+      console.log('Login attempt:', { email, password });
+    }
   };
 
   return (
