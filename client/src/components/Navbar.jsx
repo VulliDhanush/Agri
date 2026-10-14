@@ -3,15 +3,16 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Sprout, ShoppingCart, UserCircle, Sun, Moon } from 'lucide-react';
 import { AppContext } from '../context/AppContext';
 
-export default function Navbar(props) {
-  const context = useContext(AppContext) || {};
-  const cartCount = props.cartCount ?? context.cartCount ?? 0;
-  const onCartClick = props.onCartClick ?? (() => context.setIsCartOpen?.(true));
-  const userRole = props.userRole ?? context.userRole;
-  const currentUser = props.currentUser ?? context.currentUser;
-  const onLogout = props.onLogout ?? context.handleLogout;
-  const theme = props.theme ?? context.theme;
-  const toggleTheme = props.toggleTheme ?? context.toggleTheme;
+export default function Navbar() {
+  const {
+    cartCount,
+    setIsCartOpen,
+    userRole,
+    currentUser,
+    handleLogout,
+    theme,
+    toggleTheme,
+  } = useContext(AppContext);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -147,13 +148,10 @@ export default function Navbar(props) {
             {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
           </button>
 
-          {/* 
-            The Shopping Cart Icon Wrapper.
-            Notice the onClick={onCartClick}. When clicked, it tells App.jsx to open the modal!
-          */}
+          {/* Shopping Cart Icon Wrapper */}
           <div 
             style={{ position: 'relative', display: 'flex', alignItems: 'center', cursor: 'pointer', color: 'var(--text-main)' }}
-            onClick={onCartClick}
+            onClick={() => setIsCartOpen(true)}
           >
             <ShoppingCart size={24} />
             

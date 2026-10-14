@@ -2,12 +2,8 @@ import { useState, useContext } from 'react';
 import { Upload, Edit2, Check, X as CloseIcon, Trash2 } from 'lucide-react';
 import { AppContext } from '../context/AppContext';
 
-export default function FarmerDashboard(props) {
-  const context = useContext(AppContext) || {};
-  const products = props.products ?? context.products ?? [];
-  const onAddProduct = props.onAddProduct ?? context.handleAddProduct;
-  const onUpdatePrice = props.onUpdatePrice ?? context.handleUpdatePrice;
-  const onRemoveProduct = props.onRemoveProduct ?? context.handleRemoveProduct;
+export default function FarmerDashboard() {
+  const { products, handleAddProduct, handleUpdatePrice, handleRemoveProduct } = useContext(AppContext);
   // State for the "Add Product" form
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
@@ -42,8 +38,8 @@ export default function FarmerDashboard(props) {
       imageUrl: imageUrl || 'https://images.unsplash.com/photo-1595856467205-19e078044738?auto=format&fit=crop&w=300&q=80'
     };
 
-    // Send it to App.jsx to be added to the master list
-    onAddProduct(newProduct);
+    // Add product via AppContext
+    handleAddProduct(newProduct);
 
     // Clear the form fields
     setName('');
@@ -57,7 +53,7 @@ export default function FarmerDashboard(props) {
   // When the farmer clicks "Save" on a price update
   const handleSavePrice = (id) => {
     if (!newPrice) return;
-    onUpdatePrice(id, newPrice);
+    handleUpdatePrice(id, newPrice);
     setEditingId(null);
     setNewPrice('');
   };
@@ -293,7 +289,7 @@ export default function FarmerDashboard(props) {
                         onClick={() => {
                           // Simple confirmation before deleting
                           if(window.confirm(`Are you sure you want to remove ${product.name} from the marketplace?`)) {
-                            onRemoveProduct(product._id);
+                            handleRemoveProduct(product._id);
                           }
                         }}
                         title="Remove Product"

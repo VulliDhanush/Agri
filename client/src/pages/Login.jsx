@@ -1,19 +1,14 @@
 import { useState, useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 
-export default function Login(props) {
-  const context = useContext(AppContext) || {};
-  const onLogin = props.onLogin ?? context.handleLogin;
+export default function Login() {
+  const { handleLogin } = useContext(AppContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (onLogin) {
-      onLogin(email, password);
-    } else {
-      console.log('Login attempt:', { email, password });
-    }
+    handleLogin(email, password);
   };
 
   return (

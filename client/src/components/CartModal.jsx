@@ -2,19 +2,11 @@ import { useState, useContext } from 'react';
 import { X } from 'lucide-react';
 import { AppContext } from '../context/AppContext';
 
-export default function CartModal(props) {
-  const context = useContext(AppContext) || {};
-  const isOpen = props.isOpen ?? context.isCartOpen;
-  const onClose = props.onClose ?? (() => context.setIsCartOpen?.(false));
-  const cartItems = props.cartItems ?? context.cartItems ?? [];
-  const onCheckout = props.onCheckout ?? context.handleCheckout;
-  // Add state to remember the selected payment method
+export default function CartModal() {
+  const { isCartOpen, setIsCartOpen, cartItems, handleCheckout } = useContext(AppContext);
   const [paymentMethod, setPaymentMethod] = useState('Cash on Delivery (COD)');
 
-  // --- EARLY RETURN ---
-  // If isOpen is false, we literally return "null" (nothing). 
-  // This means React won't draw the popup on the screen at all!
-  if (!isOpen) {
+  if (!isCartOpen) {
     return null;
   }
 
@@ -45,8 +37,7 @@ export default function CartModal(props) {
         {/* The Header (Title and Close Button) */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
           <h2>Your Cart</h2>
-          {/* Clicking this button triggers the onClose function passed from App.jsx */}
-          <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-main)' }}>
+          <button onClick={() => setIsCartOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-main)' }}>
             <X size={24} />
           </button>
         </div>
@@ -98,8 +89,7 @@ export default function CartModal(props) {
               <span>Total:</span>
               <span>₹{total.toFixed(2)}</span>
             </div>
-            {/* Clicking this button triggers the onCheckout function passed from App.jsx, passing the payment method */}
-            <button className="btn btn-primary" style={{ width: '100%' }} onClick={() => onCheckout(paymentMethod)}>
+            <button className="btn btn-primary" style={{ width: '100%' }} onClick={() => handleCheckout(paymentMethod)}>
               Proceed to Checkout
             </button>
           </div>

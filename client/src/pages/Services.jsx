@@ -1,15 +1,6 @@
-// 1. Import useState to give our component memory (specifically, to remember which "Tab" is active)
 import { useState } from 'react';
 
-/**
- * Services Component (Job Board and Machine Rentals)
- * This page shows how to build a "Tabbed" interface where clicking a button 
- * swaps out the content below it!
- */
 export default function Services() {
-  // --- STATE ---
-  // 'activeTab' remembers which button the user clicked. 
-  // It starts with the value 'jobs' by default.
   const [activeTab, setActiveTab] = useState('jobs');
 
   // --- MOCK DATA ---

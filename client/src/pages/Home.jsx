@@ -3,9 +3,8 @@ import { Link } from 'react-router-dom';
 import { ShoppingBasket, Tractor } from 'lucide-react';
 import { AppContext } from '../context/AppContext';
 
-export default function Home(props) {
-  const context = useContext(AppContext) || {};
-  const userRole = props.userRole ?? context.userRole;
+export default function Home() {
+  const { userRole } = useContext(AppContext);
   return (
     // 'className' is the React version of the HTML 'class' attribute.
     <div className="page-wrapper">

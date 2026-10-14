@@ -2,12 +2,8 @@ import { useContext } from 'react';
 import axios from 'axios';
 import { AppContext } from '../context/AppContext';
 
-export default function Marketplace(props) {
-  const context = useContext(AppContext) || {};
-  const products = props.products ?? context.products ?? [];
-  const cartItems = props.cartItems ?? context.cartItems ?? [];
-  const onAddToCart = props.onAddToCart ?? context.handleAddToCart;
-  const onRemoveFromCart = props.onRemoveFromCart ?? context.handleRemoveFromCart;
+export default function Marketplace() {
+  const { products, cartItems, handleAddToCart, handleRemoveFromCart } = useContext(AppContext);
   // Helper to count how many copies of this product are in the cart
   const getProductCount = (productId) => {
     return cartItems.filter(item => item._id === productId).length;
@@ -54,7 +50,7 @@ export default function Marketplace(props) {
                     transition: 'background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease'
                   }}>
                     <button 
-                      onClick={() => onRemoveFromCart(product)}
+                      onClick={() => handleRemoveFromCart(product)}
                       style={{ 
                         backgroundColor: 'var(--primary-color)', 
                         color: '#fff', 
@@ -111,7 +107,7 @@ export default function Marketplace(props) {
                   <button 
                     className="btn btn-primary" 
                     style={{ padding: '0.5rem 1rem' }}
-                    onClick={() => onAddToCart(product)}
+                    onClick={() => handleAddToCart(product)}
                   >
                     Add to Cart
                   </button>

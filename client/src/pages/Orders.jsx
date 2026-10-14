@@ -1,9 +1,8 @@
 import { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 
-export default function Orders(props) {
-  const context = useContext(AppContext) || {};
-  const orders = props.orders ?? context.orders ?? [];
+export default function Orders() {
+  const { orders } = useContext(AppContext);
   return (
     <div className="page-wrapper">
       <div className="container">
